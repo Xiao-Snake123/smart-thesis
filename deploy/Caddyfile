@@ -1,0 +1,33 @@
+# 生产环境 Caddy 配置。域名通过 SITE_DOMAIN 注入（如 topic.example.edu.cn），Caddy 自动申请并续期 HTTPS 证书。
+# API 与 WebSocket 统一由 /smart_thesis_api 前缀转发到后端。
+# 需要把根域跳转到 SITE_DOMAIN 时，取消下面站点的注释并换成自己的域名。
+
+# example.edu.cn, www.example.edu.cn {
+#     redir https://{$SITE_DOMAIN}{uri} permanent
+# }
+
+{$SITE_DOMAIN} {
+    encode zstd gzip
+
+    handle_path /smart_thesis_api/* {
+        reverse_proxy {$BACKEND_UPSTREAM:work-backend:8000}
+    }
+
+    handle {
+        root * /etc/caddy/dist
+        try_files {path} /index.html
+        file_server
+    }
+
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options SAMEORIGIN
+        Referrer-Policy strict-origin-when-cross-origin
+        -Server
+    }
+
+    log {
+        output stdout
+        format json
+    }
+}
