@@ -20,7 +20,11 @@ CREATE TABLE IF NOT EXISTS `user`
     `email`        VARCHAR(256)          DEFAULT NULL COMMENT '验证码发送邮箱',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_user_account` (`userAccount`),
-    KEY `idx_user_name` (`userName`)
+    KEY `idx_user_name` (`userName`),
+    KEY `idx_user_role` (`userRole`),
+    KEY `idx_user_dept` (`dept`),
+    KEY `idx_user_role_dept` (`userRole`, `dept`),
+    KEY `idx_user_status` (`status`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
@@ -49,7 +53,9 @@ CREATE TABLE IF NOT EXISTS `project`
     `isDelete`    TINYINT      NOT NULL DEFAULT 0 COMMENT '是否删除',
     `deptName`    VARCHAR(256)          DEFAULT NULL COMMENT '系部名',
     `groupName`   VARCHAR(256)          DEFAULT NULL COMMENT '选题组',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    KEY `idx_project_name` (`projectName`),
+    KEY `idx_project_dept` (`deptName`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
@@ -77,7 +83,12 @@ CREATE TABLE IF NOT EXISTS `topic`
     `selectAmount`    INT                    DEFAULT 0 COMMENT '预选人数',
     `reason`          VARCHAR(256)           DEFAULT NULL COMMENT '打回理由',
     PRIMARY KEY (`id`),
-    KEY `idx_topic_teacher_account` (`teacherAccount`)
+    KEY `idx_topic_teacher_account` (`teacherAccount`),
+    KEY `idx_topic_dept_status` (`deptName`, `status`),
+    KEY `idx_topic_dept_group` (`deptName`, `topicGroup`),
+    KEY `idx_topic_status` (`status`),
+    KEY `idx_topic_teacher_status` (`teacherAccount`, `status`),
+    KEY `idx_topic_teacher_group` (`teacherAccount`, `topicGroup`, `isDelete`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
@@ -95,7 +106,10 @@ CREATE TABLE IF NOT EXISTS `student_topic_selection`
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_selection_user_topic` (`userAccount`, `topicId`),
     KEY `idx_selection_user_account` (`userAccount`),
-    KEY `idx_selection_topic_id` (`topicId`)
+    KEY `idx_selection_topic_id` (`topicId`),
+    KEY `idx_selection_status` (`status`),
+    KEY `idx_selection_account_status` (`userAccount`, `status`),
+    KEY `idx_selection_topic_status` (`topicId`, `status`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
