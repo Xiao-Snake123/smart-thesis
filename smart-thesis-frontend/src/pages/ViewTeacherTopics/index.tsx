@@ -112,7 +112,7 @@ const ViewTeacherTopics: React.FC = () => {
       dataIndex: 'id',
       key: 'id',
       width: 60,
-      fixed: 'left',
+      fixed: 'left' as const,
       render: (_: any, __: any, index: number) => index + 1,
     },
     {
@@ -120,7 +120,7 @@ const ViewTeacherTopics: React.FC = () => {
       dataIndex: 'topic',
       key: 'topic',
       width: 200,
-      fixed: 'left',
+      fixed: 'left' as const,
     },
     {
       title: '题目类型',
@@ -133,7 +133,7 @@ const ViewTeacherTopics: React.FC = () => {
       dataIndex: 'surplusQuantity',
       key: 'surplusQuantity',
       width: 100,
-      sorter: (a, b) => {
+      sorter: (a: API.Topic, b: API.Topic) => {
         if (typeof a.surplusQuantity !== 'number' || typeof b.surplusQuantity !== 'number') return 0;
         return a.surplusQuantity - b.surplusQuantity;
       },
@@ -151,7 +151,7 @@ const ViewTeacherTopics: React.FC = () => {
       dataIndex: 'selectAmount',
       key: 'selectAmount',
       width: 100,
-      sorter: (a, b) => {
+      sorter: (a: API.Topic, b: API.Topic) => {
         if (typeof a.selectAmount !== 'number' || typeof b.selectAmount !== 'number') return 0;
         return a.selectAmount - b.selectAmount;
       },
